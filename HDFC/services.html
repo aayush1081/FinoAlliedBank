@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>FinoAllied Bank</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+
+    <script>
+
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var botId = url.searchParams.get("guid");
+        if (botId == null) {
+            botId = window.sessionStorage.getItem("BOT_GUID");
+        }
+        else {
+            window.sessionStorage.setItem("BOT_GUID", botId);
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "https://cb-nonprod-finoallied.azurewebsites.net/api/BotSettings/getBotConfig?guid=" + botId,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                $('.servicebox').css('background-color', response.botBackColor);
+                $('.serviceboxtext').css('color', response.botColor);
+                $('.serviceboxtext').css('background-color', response.botBackColor);
+            },
+            failure: function (response) {
+                console.log(response.responseText);
+            },
+            error: function (response) {
+                console.log(response.responseText);
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="row mg-t-60 font12">
+            <div class="col-md-12 pd-0">
+
+                <table>
+                    <tr>
+                        <td align="center">
+                            <div class="servicebox">
+                                <a href="banking-services.html"><img src="img/webicon50x50/BankServices.png"></a>
+                            </div>
+                            <div class="serviceboxtext">
+                                Banking Services
+                            </div>
+                        </td>
+                        <td align="center">
+                            <div class="servicebox">
+                                <a href="credit-cards.html"><img src="img/webicon50x50/credit-cards.png"></a>
+                            </div>
+                            <div class="serviceboxtext">
+                                Credit Cards
+                            </div>
+                        </td>
+                        <td align="center">
+                            <div class="servicebox">
+                                <a href="deposits.html"><img src="img/webicon50x50/Deposits.png"></a>
+                            </div>
+                            <div class="serviceboxtext">
+                                Deposits
+                            </div>
+                        </td>
+
+                    </tr>
+
+                    <tr><td colspan="3">&nbsp;</td></tr>
+
+                    <tr>
+                        <td align="center">
+                            <div class="servicebox">
+                                <a href="loans.html"><img src="img/webicon50x50/loan-service.png"></a>
+                            </div>
+                            <div class="serviceboxtext">Loans</div>
+                        </td>
+
+                        <td align="center">
+                            <div class="servicebox">
+                                <a href="insurance.html"><img src="img/webicon50x50/life-insurance.png"></a>
+                            </div>
+                            <div class="serviceboxtext">Insurance</div>
+                        </td>
+
+                        <td align="center">
+                            <div class="servicebox">
+                                <a href="demat.html"><img src="img/webicon50x50/demat-account.png"></a>
+                            </div>
+                            <div class="serviceboxtext">Demat</div>
+                        </td>
+
+                    </tr>
+
+
+                    <tr><td colspan="3">&nbsp;</td></tr>
+
+                    <tr>
+                        <td align="center">
+                            <div class="servicebox">
+                                <a href="service-request.html"><img src="img/webicon50x50/service-request.png"></a>
+                            </div>
+                            <div class="serviceboxtext">Service Requests</div>
+                        </td>
+
+                        <td align="center">
+                            <div class="servicebox">
+                                <a href="offer-notification.html"><img src="img/webicon50x50/offers.png"></a>
+                            </div>
+                            <div class="serviceboxtext">Offer/Notification</div>
+                        </td>
+
+                        <td align="center">
+                            <div class="servicebox">
+                                <a href="contact.html"><img src="img/webicon50x50/contactus.png"></a>
+                            </div>
+                            <div class="serviceboxtext">Contact Us</div>
+                        </td>
+                    </tr>
+
+                    <tr><td colspan="3">&nbsp;</td></tr>
+
+                    <tr>
+                        <td align="center">
+                            <div class="servicebox">
+                                <a href="https://finoalliedbot.azurewebsites.net/index.html?menu=Value%20Added%20Services&sub_menu=ATM/Branch%20Locator" onclick="location.href=this.href+'&guid='+botId;return false;"><img src="img/webicon50x50/atm-locator.png"></a>
+                            </div>
+                            <div class="serviceboxtext">ATM/Branch</div>
+                        </td>
+
+                        <td align="center">
+                            <div class="servicebox">
+                                <a href="bill-payment.html"><img src="img/webicon50x50/wallet.png"></a>
+                            </div>
+                            <div class="serviceboxtext">Bill Payment</div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+
+</html>
