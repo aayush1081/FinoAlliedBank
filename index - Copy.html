@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>FinoAllied Bank</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="toparea"><img src="img/logo.png"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <img src="img/bannerimg.png" style="max-width: 100%;">
+            </div>
+
+            <div class="col-md-6">
+                <h2>What kind of help you today?</h2>
+
+                <div class="card mg-t-20">
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/BankServices.png"> Banking Services
+                            </div>
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/CreditCards.png"> Credit Cards
+                            </div>
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/LoanServices.png"> Loan Offers
+                            </div>
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/Deposits.png"> Deposits
+                            </div>
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/Insurance.png"> Insurance
+                            </div>
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/Demat.png"> Demat Account
+                            </div>
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/ServiceRequest.png"> Service Requests
+                            </div>
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/ATMBranc.png"> ATM/Branch
+                            </div>
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/OfferNotification.png"> Offer Notification
+                            </div>
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/ContactUs.png"> Contact Us
+                            </div>
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/Accountdetails.png"> Account Details
+                            </div>
+                            <div class="col-md-4 mg-b-30">
+                                <img src="img/PayBills.png"> Pay Bills
+                            </div>
+
+                        </div>
+                        <!--
+                                <div class="row mg-t-20">
+
+                                  <div class="col-md-4 linkbox">
+                                    <b>Digital Banking</b><br>
+                                    <a href="#">Click here</a>
+                                  </div>
+
+                                  <div class="col-md-4 linkbox mg-l-30">
+                                    <b>Business Banking</b><br>
+                                    <a href="#">Click here</a>
+                                  </div>
+
+                                </div> -->
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="footer">Powered by Allied Digital Services Ltd</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Chatbot div-->
+    <div class="chaticon">
+        <a href="#" onclick="openForm()"><img class="button" src="img/chatbotpageIcon.png"></a>
+        <div class="chat-popup" id="myForm">
+            <div class="headerbg"><img src="img/logoheader2.png"></div>
+            <div class="chatclose">
+                <span onclick="closeForm()" title="Close/Minimize" style="cursor:pointer">X</span>
+            </div>
+            <div class="col-md-12">
+                <iframe src="services.html" allow="camera *;microphone *" class="chatmainiframe" allowtransparency="true" width="360px" height="560px"></iframe>
+            </div>
+        </div>
+    </div>
+    <!-- Chatbot div-->
+
+    <script>
+
+        function openForm() {
+            event.preventDefault();
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+            document.getElementById("imgId").style.display = "block";
+        }
+
+
+    </script>
+
+</body>
+</html>
