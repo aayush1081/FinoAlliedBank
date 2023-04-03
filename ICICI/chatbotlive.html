@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="/images/BotServices.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <title>FinoAllied</title>
+    <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
+    <link href="css/botchat.css" rel="stylesheet" />
+    <link href="css/custom.css" rel="stylesheet" />
+    <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div class="languagebg">
+        <div class="float-left">
+            <!-- <label>Select Language:</label> -->
+            <select class="form-control" id="languages" onChange="setLanguage()">
+                <option value="none" selected disabled hidden>Language</option>
+                <option value="en-US">English</option>
+                <option value="hi-IN">हिन्दी</option>
+                <option value="gu-IN">ગુજરાતી</option>
+                <option value="mr-IN">मराठी</option>
+                <option value="bn-IN">বাংলা</option>
+            </select>
+        </div>
+
+        <div class="float-right">
+            <a id="btnMenu" href="#" onclick="history.back()" class="btn btn-primary" style="color:black;" data-toggle="tooltip" title="Menu"><i class="fa-solid fa-bars"></i></a>
+        </div>
+    </div>
+
+    <div id="webchat" role="main"></div>
+    <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script src='https://unpkg.com/simple-update-in/dist/simple-update-in.production.min.js'></script>
+    <script>
+
+        let guid = getParameterByName("guid") == null ? "0" : getParameterByName("guid");
+        let menu = getParameterByName("menu") == null ? "" : getParameterByName("menu");
+        let sub_menu = getParameterByName("sub_menu") == null ? "" : getParameterByName("sub_menu");
+        let action_name = getParameterByName("action_name") == null ? "" : getParameterByName("action_name");
+        let botColor, userColor, botIcon, botUserIcon, botBackColor, userBackColor, buttonBackColor, buttonTextColor;
+
+
+        if (window.localStorage.getItem("BOT_LANG") == undefined || window.localStorage.getItem("BOT_LANG") == null || window.localStorage.getItem("BOT_LANG") == "") {
+            document.getElementById('languages').value = "en-US";
+        } else {
+            document.getElementById('languages').value = window.localStorage.getItem("BOT_LANG");
+        }
+
+        // document.getElementById('btnMenu').style.cssText = "background-color:"+botBackColor+";";
+
+        $("body").bind("DOMSubtreeModified", function () {
+            //to convert MPIN text into password format.
+            $("#mpinNumber>div>input[type='text']").attr("type", "password");
+
+            //credit card login background color change
+            $(".ac-container.ac-adaptiveCard").css("background-color", "inherit");
+            //$("div > div.ac-actionSet").first().css("flex-direction", "inherit");
+
+            //credit card 2 login option side by side
+            $("div > div.ac-actionSet > button[title='Customer Id']").last().parent('div').css("flex-direction", "inherit");
+            $("button[title='Customer Id']").css("width", "48%");
+            $("div > div.ac-actionSet > button[title='Customer Id']").last().next('div').css("width", "2%");
+            $("button[title='Credit Card']").css("width", "48%");
+
+            //Button and Suggested Action Color
+            $(".ac-pushButton").css("background-color", buttonBackColor);
+            $(".ac-pushButton").css("color", buttonTextColor);
+            $(".webchat__suggested-action").css("background", buttonBackColor);
+            $(".webchat__suggested-action").css("color", buttonTextColor);
+            $(".react-film__flipper__body").css("background", buttonBackColor);
+            $(".react-film__flipper__body").css("color", buttonTextColor);
+            $(".react-film__flipper__body").css("border-color", buttonTextColor);
+
+            //code to change border color of adaptive card button on click
+            if ($("button.ac-pushButton").attr("style") != undefined) {
+                $('button.ac-pushButton').click(function () {
+                    if ($(this).attr("style").indexOf("border:") == -1) {
+                        console.log(this);
+                        let existingStyles = $(this).attr("style");
+                        $(this).attr("style", existingStyles + "border:2px solid " + buttonTextColor + " !important");
+                    }
+                    setTimeout(function () {
+                        console.log($("button.ac-pushButton").attr("style"));
+                        $("button.ac-pushButton").each(function () {
+                            if ($(this).attr("style").indexOf("border:") > -1) {
+                                let existingStyles = $(this).attr("style");
+                                $(this).attr("style", existingStyles.replace("border:2px solid " + buttonTextColor + " !important", ""));
+                            }
+                        })
+                    }, 200);
+                });
+            }
+            //ends here
+
+            //code to enable labels in adaptive card by removing color
+            $("span[class='ac-textRun']:first-child").css("color", "");
+
+            // code to display required error message in red
+            $("div[class='ac-textBlock']").each(function () {
+                if ($(this).text().toLowerCase().indexOf("required") > -1) {
+                    $(this).children("p").css("color", "red");
+                }
+            });
+        });
+
+        function setLanguage() {
+            var selectedLang = document.getElementById('languages').value;
+            localStorage.setItem("BOT_LANG", selectedLang);
+            var iframe = document.getElementById('iframeChat');
+            location.reload();
+            return true;
+        }
+
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&]*)|&|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+        // This is a helper function for fetching JSON resources.
+        async function fetchJSON(url, options = {}) {
+            const res = await fetch(url, {
+                ...options,
+                headers: {
+                    ...options.headers,
+                    accept: 'application/json'
+                }
+            });
+
+            if (!res.ok) {
+                throw new Error(`Failed to fetch JSON due to ${res.status}`);
+            }
+            return await res.json();
+        }
+
+        async function fetchCredentials() {
+            const { speech_service_token } = await fetchJSON('https://finoalliedbot.azurewebsites.net/api/speechService/token');
+
+            if (speech_service_token != "" && speech_service_token != undefined) {
+                return {
+                    authorizationToken: speech_service_token,
+                    region: 'centralindia'
+                };
+            } else {
+                throw new Error('Failed to retrieve authorization token for Cognitive Services.');
+            }
+        }
+
+
+
+        $.ajax({
+            type: "GET",
+            url: "https://cb-nonprod-finoallied.azurewebsites.net/api/BotSettings/getBotConfig?guid=" + guid,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                botColor = response.botColor;
+                userColor = response.userColor;
+                botBackColor = response.botBackColor;
+                userBackColor = response.userBackColor;
+                buttonBackColor = response.buttonBackColor;
+                buttonTextColor = response.buttonTextColor;
+
+                botIcon = response.botIcon == null ? "" : response.botIcon;
+                botUserIcon = response.botUserIcon == null ? "" : response.botUserIcon;
+                guid = getParameterByName("guid") == null ? "" : getParameterByName("guid");
+                (async function main() {
+                    const { token, userId } = await fetchJSON('https://finoalliedbot.azurewebsites.net/api/directLine/token');
+                    var lang = window.localStorage.getItem("BOT_LANG");
+                    if (lang == "" || lang == null || lang == undefined) {
+                        lang = "en";
+                    }
+
+                    if (lang == "hi-IN") {
+                        //to get the intent in hindi for Menu, Sub menu
+                        if (menu != "" && sub_menu != "") {
+                            const { serviceName, subscriptionName } = await fetchJSON('https://cb-nonprod-finoallied.azurewebsites.net/api/BotSettings/TransaleServiceSubscriptionText?serviceName=' + menu + '&subscriptionName=' + sub_menu + '&channelName=webchannel&languageCode=hi');
+                            menu = serviceName;
+                            sub_menu = subscriptionName;
+                        }
+                    }
+
+                    const { speech_service_token } = await fetchJSON('https://finoalliedbot.azurewebsites.net/api/speechService/token');
+                    var webSpeechPonyfillFactory = await window.WebChat.createCognitiveServicesSpeechServicesPonyfillFactory({
+                        credentials: fetchCredentials
+                    });
+
+                    const styleOptions = {
+                        userAvatarInitials: 'WC',
+                        botAvatarInitials: 'BF',
+                        botAvatarImage: botIcon == "" ? 'images/left-side-icon.png' : botIcon,
+                        userAvatarImage: botUserIcon == "" ? "images/right-side-icon.png" : botUserIcon,
+                        hideUploadButton: true,
+                        bubbleTextColor: botColor,
+                        bubbleFromUserTextColor: userColor,
+                        bubbleBackground: botBackColor,
+                        bubbleBorderColor: botBackColor,
+                        bubbleFromUserBackground: userBackColor,
+                        bubbleFromUserBorderColor: userBackColor,
+                    };
+
+                    const botConnection = new WebChat.createDirectLine({ token });
+                    let store = window.WebChat.createStore(
+                        {},
+                        ({ dispatch }) => next => action => {
+                            if (action.type === 'DIRECT_LINE/CONNECT_FULFILLED') {
+                                // dispatch({
+                                //     type: 'WEB_CHAT/SEND_EVENT',
+                                //     payload: {
+                                //         name: 'loginevent',
+                                //         value: { guid_value: guid, language: lang }
+                                //     }
+                                // });
+                                var greeting = "Hello";
+                                if (lang == "hi-IN") {
+                                    greeting = "नमस्ते";
+                                }
+                                if (menu != "" && sub_menu != "" && action_name != "") {
+
+                                    botConnection.postActivity({ type: "message", locale: lang, text: greeting, from: { id: userId, name: lang + "," + guid } }).subscribe(function (id) {
+                                        botConnection.postActivity({ type: "message", locale: lang, text: menu, from: { id: userId } }).subscribe(function (id) {
+                                            botConnection.postActivity({ type: "message", locale: lang, text: sub_menu, from: { id: userId } }).subscribe(function (id) {
+                                                botConnection.postActivity({ type: "message", locale: lang, text: action_name, from: { id: userId } }).subscribe(function (id) {
+
+                                                })
+                                            })
+                                        })
+                                    });
+                                }
+                                else if (menu != "" && sub_menu != "") {
+
+                                    botConnection.postActivity({ type: "message", locale: lang, text: greeting, from: { id: userId, name: lang + "," + guid } }).subscribe(function (id) {
+                                        botConnection.postActivity({ type: "message", locale: lang, text: menu, from: { id: userId } }).subscribe(function (id) {
+                                            botConnection.postActivity({ type: "message", locale: lang, text: sub_menu, from: { id: userId } }).subscribe(function (id) {
+
+                                            })
+                                        })
+                                    });
+                                }
+                                else {
+                                    botConnection.postActivity({ type: "message", locale: lang, text: greeting, from: { id: userId, name: lang + "," + guid } }).subscribe(function (id) { });
+                                }
+                            }
+
+                            return next(action);
+                        }
+                    );
+
+                    WebChat.renderWebChat(
+                        {
+                            directLine: botConnection,
+                            store,
+                            locale: lang,
+                            styleOptions,
+                            webSpeechPonyfillFactory: webSpeechPonyfillFactory
+                        },
+                        document.getElementById('webchat')
+                    ); document.querySelector('#webchat > *').focus();
+
+                })().catch(err => console.error(err));
+            },
+            failure: function (response) {
+                console.log(response.responseText);
+            },
+            error: function (response) {
+                console.log(response.responseText);
+            }
+        });
+    </script>
+    <div id="root"></div>
+</body>
+</html>

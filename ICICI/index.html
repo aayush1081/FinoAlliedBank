@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>FinoAllied Bank</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+<script>
+	var url_string = window.location.href;
+	var url = new URL(url_string);
+	var botId = url.searchParams.get("guid");
+
+	$.ajax({
+		type: "GET",
+		url: "https://cb-nonprod-finoallied.azurewebsites.net/api/BotSettings/getBotConfig?guid="+botId,
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function (response) {
+			$('.headerbg').css('background-color',response.botBackColor);
+			document.getElementById("imgHeader").src = response.logoImage; 
+		},
+		failure: function (response) {
+			console.log(response.responseText);
+		},
+		error: function (response) {
+			console.log(response.responseText);
+		}
+    });
+	
+</script>
+</head>
+<body>
+
+  <div class="bgback"></div>
+
+<!-- Chatbot div-->
+<div class="chaticon">
+  <a href="#" onclick="openForm()"><img class="button" src="img/ChatbotIcons_ICICI.png"></a>       
+    <div class="chat-popup" id="myForm">
+      <div class="headerbg"><img id="imgHeader" src="img/logoheader.png" width="152" height="29"></div>
+      <div class="chatclose">
+        <span onclick="closeForm()" title="Close/Minimize" style="cursor:pointer">X</span>
+      </div>
+      <div class="col-md-12">
+        <iframe id="myIframe" allow="camera *;microphone *" class="chatmainiframe" allowtransparency="true" width="360px" height="560px"></iframe>
+      </div>                                   
+    </div>
+</div>
+<!-- Chatbot div-->
+
+<script>
+    
+  function openForm() {
+    event.preventDefault();
+    document.getElementById("myForm").style.display = "block";
+  }
+
+  function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+    document.getElementById("imgId").style.display = "block";
+  }
+
+	document.getElementById("myIframe").setAttribute("src", "services.html?guid="+botId);
+</script>
+
+</body>
+</html>

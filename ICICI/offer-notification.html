@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>FinoAllied Bank</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+
+        var botId = window.sessionStorage.getItem("BOT_GUID");
+
+        $.ajax({
+            type: "GET",
+            url: "https://cb-nonprod-finoallied.azurewebsites.net/api/BotSettings/getBotConfig?guid=" + botId,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                $('.serviceboxinner').css('background-color', response.botBackColor);
+                $('.serviceboxinner').css('color', response.botColor);
+                $('.btn-sm').css('background-color', response.botBackColor);
+                $('.btn-sm').css('color', response.botColor);
+            },
+            failure: function (response) {
+                console.log(response.responseText);
+            },
+            error: function (response) {
+                console.log(response.responseText);
+            }
+        });
+    </script>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="row mg-t-60 font12">
+
+            <div class="col-md-12 tx-right mg-b-20 pd-0">
+                <a href="services.html" class="btn-sm" data-toggle="tooltip" title="Menu"><i class="fa-solid fa-bars"></i></a>
+            </div>
+
+            <div class="col-md-12 pd-0">
+
+
+                <div class="serviceboxinner">
+                    <img src="img/serviceicons/msmeloan.png"> <a href="https://finoalliedbot.azurewebsites.net/index.html?menu=Value%20Added%20Services&sub_menu=Offers/Notifications" onclick="location.href=this.href+'&guid='+botId;return false;">Loan Offers</a>
+                </div>
+
+                <div class="serviceboxinner">
+                    <img src="img/serviceicons/cardoffer.png"> <a href="https://finoalliedbot.azurewebsites.net/index.html?menu=Value%20Added%20Services&sub_menu=Offers/Notifications" onclick="location.href=this.href+'&guid='+botId;return false;">Card Offers</a>
+                </div>
+
+                <div class="serviceboxinner">
+                    <img src="img/serviceicons/fixeddeposits.png"> <a href="https://finoalliedbot.azurewebsites.net/index.html?menu=Value%20Added%20Services&sub_menu=Offers/Notifications" onclick="location.href=this.href+'&guid='+botId;return false;">FD/RD & Overdraft Offers</a>
+                </div>
+
+                <div class="serviceboxinner">
+                    <img src="img/serviceicons/offer.png"> <a href="https://finoalliedbot.azurewebsites.net/index.html?menu=Value%20Added%20Services&sub_menu=Offers/Notifications" onclick="location.href=this.href+'&guid='+botId;return false;">Other Offers</a>
+                </div>
+
+                <div class="serviceboxinner">
+                    <img src="img/serviceicons/due-notification.png"> <a href="https://finoalliedbot.azurewebsites.net/index.html" onclick="location.href=this.href+'?guid='+botId;return false;">Bill Due Notifications</a>
+                </div>
+
+                <div class="serviceboxinner">
+                    <img src="img/serviceicons/due-notification.png"> <a href="https://finoalliedbot.azurewebsites.net/index.html" onclick="location.href=this.href+'?guid='+botId;return false;">EMI Due Notifications</a>
+                </div>
+
+                <div class="serviceboxinner">
+                    <img src="img/serviceicons/notification.png"> <a href="https://finoalliedbot.azurewebsites.net/index.html" onclick="location.href=this.href+'?guid='+botId;return false;">Other Alerts & Notifications</a>
+                </div>
+
+                <div class="serviceboxinner">
+                    <img src="img/serviceicons/Suggestions.png"> <a href="https://finoalliedbot.azurewebsites.net/index.html" onclick="location.href=this.href+'?guid='+botId;return false;">Custom Suggestions</a>
+                </div>
+
+                <div class="serviceboxinner">
+                    <img src="img/serviceicons/Analytics.png"> <a href="https://finoalliedbot.azurewebsites.net/index.html" onclick="location.href=this.href+'?guid='+botId;return false;">Advanced Analytics</a>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>
